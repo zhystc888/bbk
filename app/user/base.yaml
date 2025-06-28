@@ -1,0 +1,10 @@
+nacos:
+  address: "nacos"
+  port: 8848
+  cacheDir: "/tmp/nacos/cache"
+  logDir: "/tmp/nacos/log"
+  username: "nacos"
+  password: "nacos"
+  namespaceId: "66977d19-64d2-4f8e-8dd8-b637fc700f2f"
+  group: "USER_CENTER"
+  dataID: "config.yaml"
