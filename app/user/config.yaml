@@ -23,6 +23,7 @@ database:
     createdAt: "created_at"     # (可选)自动创建时间字段名称
     updatedAt: "updated_at"     # (可选)自动更新时间字段名称
     deletedAt: "deleted_at"     # (可选)软删除时间字段名称
+    debug:   true
   logger:
     path: "E:/www/bbk/log/"
     level: "all"

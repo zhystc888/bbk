@@ -9,11 +9,11 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// User is the golang structure of table bbk_user for DAO operations like Where/Data.
-type User struct {
-	g.Meta    `orm:"table:bbk_user, do:true"`
+// UserBase is the golang structure of table bbk_user_base for DAO operations like Where/Data.
+type UserBase struct {
+	g.Meta    `orm:"table:bbk_user_base, do:true"`
 	Id        interface{} // 主键
-	Group     interface{} // 用户组 1. 后台管理员 2. 陪玩端 3. 客户端
+	Group     interface{} // 用户组
 	Password  interface{} // 密码
 	LastTime  interface{} // 上次登陆时间
 	LastIp    interface{} // 上次登陆ip

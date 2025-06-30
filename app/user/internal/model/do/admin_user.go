@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// Admin is the golang structure of table bbk_admin for DAO operations like Where/Data.
-type Admin struct {
-	g.Meta            `orm:"table:bbk_admin, do:true"`
+// AdminUser is the golang structure of table bbk_admin_user for DAO operations like Where/Data.
+type AdminUser struct {
+	g.Meta            `orm:"table:bbk_admin_user, do:true"`
 	Id                interface{} // 主键
 	UserId            interface{} // 用户ID
 	Username          interface{} // 用户名

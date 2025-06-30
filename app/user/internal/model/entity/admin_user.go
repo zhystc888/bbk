@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// Admin is the golang structure for table admin.
-type Admin struct {
+// AdminUser is the golang structure for table admin_user.
+type AdminUser struct {
 	Id                uint64      `json:"id"                orm:"id"                  description:"主键"`                 // 主键
 	UserId            uint64      `json:"userId"            orm:"user_id"             description:"用户ID"`               // 用户ID
 	Username          string      `json:"username"          orm:"username"            description:"用户名"`                // 用户名
