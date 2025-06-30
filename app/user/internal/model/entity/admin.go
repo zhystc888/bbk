@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// BbkAdmin is the golang structure for table bbk_admin.
-type BbkAdmin struct {
+// Admin is the golang structure for table admin.
+type Admin struct {
 	Id                uint64      `json:"id"                orm:"id"                  description:"主键"`                 // 主键
 	UserId            uint64      `json:"userId"            orm:"user_id"             description:"用户ID"`               // 用户ID
 	Username          string      `json:"username"          orm:"username"            description:"用户名"`                // 用户名

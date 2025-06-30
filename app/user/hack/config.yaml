@@ -6,7 +6,6 @@ gfcli:
     dao:
       - link: "mysql:root:ZHYstc_00.888@tcp(124.221.249.230:13306)/bbk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
         descriptionTag: true
-        prefix: "bbk_"
         removePrefix: "bbk_"
 
   docker:

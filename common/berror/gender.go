@@ -1,4 +1,4 @@
-package error
+package berror
 
 import (
 	"github.com/gogf/gf/v2/errors/gcode"

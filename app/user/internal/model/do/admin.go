@@ -9,8 +9,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// BbkAdmin is the golang structure of table bbk_admin for DAO operations like Where/Data.
-type BbkAdmin struct {
+// Admin is the golang structure of table bbk_admin for DAO operations like Where/Data.
+type Admin struct {
 	g.Meta            `orm:"table:bbk_admin, do:true"`
 	Id                interface{} // 主键
 	UserId            interface{} // 用户ID

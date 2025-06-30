@@ -1,12 +1,11 @@
 package cmd
 
 import (
+	"bbk/app/user/internal/controller/admin"
 	"context"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
-
-	"bbk/app/user/internal/controller/hello"
 )
 
 var (
@@ -23,7 +22,7 @@ var (
 					r.Middleware.Next()
 				})
 				group.Bind(
-					hello.NewV1(),
+					admin.NewV1(),
 				)
 			})
 			s.Run()

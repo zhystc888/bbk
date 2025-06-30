@@ -8,15 +8,15 @@ import (
 	"bbk/app/user/internal/dao/internal"
 )
 
-// bbkAdminDao is the data access object for the table bbk_admin.
+// adminDao is the data access object for the table bbk_admin.
 // You can define custom methods on it to extend its functionality as needed.
-type bbkAdminDao struct {
-	*internal.BbkAdminDao
+type adminDao struct {
+	*internal.AdminDao
 }
 
 var (
-	// BbkAdmin is a globally accessible object for table bbk_admin operations.
-	BbkAdmin = bbkAdminDao{internal.NewBbkAdminDao()}
+	// Admin is a globally accessible object for table bbk_admin operations.
+	Admin = adminDao{internal.NewAdminDao()}
 )
 
 // Add your custom methods and functionality below.

@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// BbkUser is the golang structure for table bbk_user.
-type BbkUser struct {
+// User is the golang structure for table user.
+type User struct {
 	Id        uint64      `json:"id"        orm:"id"         description:"主键"`                         // 主键
 	Group     uint        `json:"group"     orm:"group"      description:"用户组 1. 后台管理员 2. 陪玩端 3. 客户端"` // 用户组 1. 后台管理员 2. 陪玩端 3. 客户端
 	Password  string      `json:"password"  orm:"password"   description:"密码"`                         // 密码
