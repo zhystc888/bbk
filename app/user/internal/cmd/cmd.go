@@ -1,10 +1,9 @@
 package cmd
 
 import (
-	"bbk/app/user/internal/controller/admin/member"
+	"bbk/app/user/internal/controller/admin_member"
 	"context"
-	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/net/ghttp"
+	"github.com/gogf/gf/contrib/rpc/grpcx/v2"
 	"github.com/gogf/gf/v2/os/gcmd"
 )
 
@@ -20,43 +19,11 @@ var (
 		Usage: "main",
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
-			var (
-				s   = g.Server()
-				oai = s.GetOpenApi()
-			)
 
-			// OpenApi自定义信息
-			oai.Info.Title = `版本库`
-			oai.Info.Description = `传奇版本库`
-			oai.Config.CommonResponse = JsonRes{
-				Code:    0,
-				Message: "OK",
-			}
-			oai.Config.CommonResponseDataField = `Data`
-
-			s.Group("/", func(group *ghttp.RouterGroup) {
-				group.Middleware(ghttp.MiddlewareHandlerResponse)
-				group.Middleware(func(r *ghttp.Request) {
-					r.Response.CORSDefault()
-					r.Middleware.Next()
-				})
-				group.Bind(
-					member.NewV1(),
-				)
-			})
-			//openApi(s)
+			s := grpcx.Server.New()
+			admin_member.Register(s)
 			s.Run()
 			return nil
 		},
 	}
 )
-
-func openApi(s *ghttp.Server) {
-	openapi := s.GetOpenApi()
-	openapi.Config.CommonResponse = ghttp.DefaultHandlerResponse{}
-	openapi.Config.CommonResponseDataField = `Data`
-
-	// API description.
-	openapi.Info.Title = `版本库`
-	openapi.Info.Description = `传奇版本库`
-}

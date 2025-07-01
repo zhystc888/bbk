@@ -5,7 +5,7 @@ import (
 
 	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
 
-	_ "bbk/app/user/internal/logic/admin"
+	_ "bbk/app/user/internal/logic"
 
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/gogf/gf/v2/os/gtime"

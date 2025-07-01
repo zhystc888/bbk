@@ -1,18 +1,18 @@
 package model
 
 type PageReq struct {
-	Page  int `p:"page" v:"min:0#分页号码错误" dc:"分页号码" d:"1"`
-	Limit int `p:"limit" v:"max:100#分页数量最大100条" dc:"分页数量，最大100" d:"10"`
+	Page  int32 `p:"page" v:"min:0#分页号码错误" dc:"分页号码" d:"1"`
+	Limit int32 `p:"limit" v:"max:100#分页数量最大100条" dc:"分页数量，最大100" d:"10"`
 }
 
 func (p *PageReq) GetLimit() int {
-	return p.Limit
+	return int(p.Limit)
 }
 
 func (p *PageReq) GetPage() int {
-	return p.Page
+	return int(p.Page)
 }
 
 func (p *PageReq) GetOffset() int {
-	return (p.Page - 1) * p.Limit
+	return int((p.Page - 1) * p.Limit)
 }

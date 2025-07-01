@@ -6,9 +6,9 @@ import (
 )
 
 type AdminGetMemberListDto struct {
-	UserID int    `p:"userId" dc:"用户ID" v:"integer#userId必须是整数"`
+	UserID int64  `p:"userId" dc:"用户ID" v:"integer#userId必须是整数"`
 	Name   string `p:"name" dc:"【名称|用户名】模糊搜索"`
-	Status *int   `p:"status" dc:"状态，见枚举" v:"in:0,1,2#成员状态参数不正确"`
+	Status *int32 `p:"status" dc:"状态，见枚举" v:"in:0,1,2#成员状态参数不正确"`
 	PageReq
 }
 
