@@ -14,9 +14,9 @@ func init() {
 	admin.RegisterMember(&sMember{})
 }
 
-func (s *sMember) GetMemberList(ctx context.Context, params *model.AdminGetMemberListDto) (res []model.AdminGetMemberListVo, err error) {
+func (s *sMember) GetMemberList(ctx context.Context, params *model.AdminGetMemberListDto) (res []model.AdminGetMemberListVo, total int, err error) {
 	m := dao.AdminUser
-	db := m.Ctx(ctx).Fields(res).Safe(false)
+	db := m.Ctx(ctx).Fields(res).Safe(false).Limit(params.GetOffset(), params.GetLimit())
 
 	if params.Name != "" {
 		name := "%" + params.Name + "%"
@@ -34,7 +34,7 @@ func (s *sMember) GetMemberList(ctx context.Context, params *model.AdminGetMembe
 		db.Where(m.Columns().Status, params.Status)
 	}
 
-	err = db.WithAll().Scan(&res)
+	err = db.WithAll().ScanAndCount(&res, &total, false)
 	if err != nil {
 		err = berror.NewInternalError(err)
 	}

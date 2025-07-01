@@ -12,5 +12,5 @@ import (
 
 type IMemberV1 interface {
 	GetMember(ctx context.Context, req *v1.GetMemberReq) (res *v1.GetMemberRes, err error)
-	GetMemberList(ctx context.Context, req *v1.GetMemberListReq) (res []v1.GetMemberListRes, err error)
+	GetMemberList(ctx context.Context, req *v1.GetMemberListReq) (res v1.GetMemberListRes, err error)
 }

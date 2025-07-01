@@ -12,7 +12,7 @@ import (
 
 type (
 	IMember interface {
-		GetMemberList(ctx context.Context, params *model.AdminGetMemberListDto) (res []model.AdminGetMemberListVo, err error)
+		GetMemberList(ctx context.Context, params *model.AdminGetMemberListDto) (res []model.AdminGetMemberListVo, total int, err error)
 		GetMember(ctx context.Context, userId int) (res *model.AdminGetMemberVo, err error)
 	}
 )

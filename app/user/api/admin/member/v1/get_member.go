@@ -10,7 +10,6 @@ type GetMemberReq struct {
 }
 
 type GetMemberRes struct {
-	g.Meta `mime:"application/json"`
 	MemberBase
 	Username string `json:"username" dc:"用户名"`
 }

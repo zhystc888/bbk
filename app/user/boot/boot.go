@@ -15,7 +15,7 @@ func init() {
 	env := os.Getenv("APP_ENV") // 例如 "local" 或 "dev"
 	if env == "local" {
 		// 本地环境：使用文件配置
-		localAdapter, err := gcfg.NewAdapterFile("config.yaml")
+		localAdapter, err := gcfg.NewAdapterFile("manifest/config/config.yaml")
 		if err != nil {
 			panic(err)
 		}
@@ -33,26 +33,26 @@ func init() {
 }
 
 func getNacosAdapter() (adapter gcfg.Adapter, err error) {
-
+	baseCfgPath := "manifest/config/base.yaml"
 	var (
 		ctx          = gctx.GetInitCtx()
 		serverConfig = constant.ServerConfig{
-			IpAddr:      g.Cfg("base.yaml").MustGet(ctx, "nacos.address").String(),
-			Port:        g.Cfg("base.yaml").MustGet(ctx, "nacos.port").Uint64(),
-			GrpcPort:    g.Cfg("base.yaml").MustGet(ctx, "nacos.gprc.port").Uint64(),
+			IpAddr:      g.Cfg(baseCfgPath).MustGet(ctx, "nacos.address").String(),
+			Port:        g.Cfg(baseCfgPath).MustGet(ctx, "nacos.port").Uint64(),
+			GrpcPort:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.gprc.port").Uint64(),
 			ContextPath: "/nacos",
 		}
 		clientConfig = constant.ClientConfig{
-			CacheDir:    g.Cfg("base.yaml").MustGet(ctx, "nacos.cacheDir").String(),
-			LogDir:      g.Cfg("base.yaml").MustGet(ctx, "nacos.logDir").String(),
-			NamespaceId: g.Cfg("base.yaml").MustGet(ctx, "nacos.namespaceId").String(),
-			Username:    g.Cfg("base.yaml").MustGet(ctx, "nacos.username").String(),
-			Password:    g.Cfg("base.yaml").MustGet(ctx, "nacos.password").String(),
+			CacheDir:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.cacheDir").String(),
+			LogDir:      g.Cfg(baseCfgPath).MustGet(ctx, "nacos.logDir").String(),
+			NamespaceId: g.Cfg(baseCfgPath).MustGet(ctx, "nacos.namespaceId").String(),
+			Username:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.username").String(),
+			Password:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.password").String(),
 		}
 
 		configParam = vo.ConfigParam{
-			DataId: g.Cfg("base.yaml").MustGet(ctx, "nacos.dataID").String(),
-			Group:  g.Cfg("base.yaml").MustGet(ctx, "nacos.group").String(),
+			DataId: g.Cfg(baseCfgPath).MustGet(ctx, "nacos.dataID").String(),
+			Group:  g.Cfg(baseCfgPath).MustGet(ctx, "nacos.group").String(),
 		}
 	)
 
