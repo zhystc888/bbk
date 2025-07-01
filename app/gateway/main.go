@@ -1,12 +1,12 @@
 package main
 
 import (
-	_ "bbk/app/geteway/internal/packed"
+	_ "bbk/app/gateway/internal/packed"
 	"github.com/gogf/gf/v2/os/gtime"
 
 	"github.com/gogf/gf/v2/os/gctx"
 
-	"bbk/app/geteway/internal/cmd"
+	"bbk/app/gateway/internal/cmd"
 )
 
 func main() {
@@ -15,6 +15,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	cmd.Main.Run(gctx.GetInitCtx())
 }

@@ -7,7 +7,7 @@ package admin_member
 import (
 	"context"
 
-	"bbk/app/geteway/api/admin_member/v1"
+	"bbk/app/gateway/api/admin_member/v1"
 )
 
 type IAdminMemberV1 interface {

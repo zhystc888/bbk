@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"bbk/app/geteway/internal/model"
+	"bbk/app/gateway/internal/model"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -13,7 +13,7 @@ type GetMemberListReq struct {
 type GetMemberListRes struct {
 	g.Meta `resEg:"resource/example/adminGetMemberList.json"`
 	List   []GetMemberListItem `json:"list" dc:"数据列表" minItems:"10" maxItems:"10"`
-	Total  int                 `json:"total" dc:"数据总数"`
+	Total  int64               `json:"total" dc:"数据总数"`
 }
 
 type GetMemberListItem struct {

@@ -5,7 +5,7 @@
 package admin_member
 
 import (
-	"bbk/app/geteway/api/admin_member"
+	"bbk/app/gateway/api/admin_member"
 )
 
 type ControllerV1 struct{}

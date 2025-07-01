@@ -9,5 +9,5 @@ var (
 )
 
 var (
-	CodeInternal = gcode.New(10500, "服务器内部错误", nil)
+	CodeInternal = gcode.New(50000, "服务器内部错误", nil)
 )
