@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/gogf/gf/contrib/config/nacos/v2"
 	rnacos "github.com/gogf/gf/contrib/registry/nacos/v2"
+	"github.com/gogf/gf/contrib/rpc/grpcx/v2"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/net/gsvc"
 	"github.com/gogf/gf/v2/os/gcfg"
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
@@ -55,7 +55,7 @@ func getNacosRegister(ctx context.Context, baseCfgPath string) {
 	addr := g.Cfg(baseCfgPath).MustGet(ctx, "nacos.address").String()
 	port := g.Cfg(baseCfgPath).MustGet(ctx, "nacos.port").Int()
 
-	gsvc.SetRegistry(rnacos.New(fmt.Sprintf("%s:%d", addr, port), func(config *constant.ClientConfig) {
+	grpcx.Resolver.Register(rnacos.New(fmt.Sprintf("%s:%d", addr, port), func(config *constant.ClientConfig) {
 		*config = getNacosClientConfig(ctx, baseCfgPath) // 覆盖 config 指向的结构体内容
 	}))
 }

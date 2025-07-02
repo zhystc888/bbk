@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "bbk/app/gateway/boot"
 	_ "bbk/app/gateway/internal/packed"
 	"github.com/gogf/gf/v2/os/gtime"
 

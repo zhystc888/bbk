@@ -1,10 +1,10 @@
 nacos:
-  address: "nacos"
-  port: 8848
-  cacheDir: "/tmp/nacos/cache"
-  logDir: "/tmp/nacos/log"
+  address: "nacos-grpc.yuanjincheng.cn"
+  port: 443
+  cacheDir: "E:/www/bbk/tmp/nacos/cache"
+  logDir: "E:/www/bbk/tmp/nacos/log"
   username: "nacos"
   password: "nacos"
-  namespaceId: "66977d19-64d2-4f8e-8dd8-b637fc700f2f"
+  namespaceId: "7753e029-aa86-48ec-aa59-d8a15a9c71bc"
   group: "USER_CENTER"
   dataID: "config.yaml"
