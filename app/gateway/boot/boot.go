@@ -9,69 +9,77 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gcfg"
 	"github.com/gogf/gf/v2/os/gctx"
+	"github.com/gogf/gf/v2/os/gfile"
+	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"os"
 )
 
+var (
+	configPath      = gfile.Pwd() + "/config/config.yaml"
+	localConfigPath = gfile.Pwd() + "/app/user/manifest/config/config.yaml"
+	env             = os.Getenv("APP_ENV")
+)
+
 func init() {
+	fmt.Println("全局配置文件:", configPath)
+	fmt.Println("本地配置文件:", localConfigPath)
 	// 环境变量决定使用本地配置还是 Nacos
-	env := os.Getenv("APP_ENV") // 例如 "local" 或 "dev"
 	if env == "local" {
 		// 本地环境：使用文件配置
-		localAdapter, err := gcfg.NewAdapterFile("manifest/config/config.yaml")
+		localAdapter, err := gcfg.NewAdapterFile(localConfigPath)
 		if err != nil {
 			panic(err)
 		}
 		g.Cfg().SetAdapter(localAdapter)
 	} else {
 		ctx := gctx.GetInitCtx()
-		baseCfgPath := "manifest/config/base.yaml"
-		// 注册中心
-		getNacosRegister(ctx, baseCfgPath)
 		// 配置中心
-		adapter, err := getNacosAdapter(ctx, baseCfgPath)
+		adapter, err := getNacosAdapter(ctx, configPath)
+		g.Cfg().SetAdapter(adapter)
 		if err != nil {
 			panic(err)
 		}
-		g.Cfg().SetAdapter(adapter)
+		// 注册中心
+		getNacosRegister(ctx, configPath)
 	}
 
 	// 异步日志
 	g.Log().SetAsync(true)
 }
 
-func getNacosClientConfig(ctx context.Context, baseCfgPath string) constant.ClientConfig {
+func getNacosClientConfig(ctx context.Context, configPath string) constant.ClientConfig {
 	return constant.ClientConfig{
-		CacheDir:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.cacheDir").String(),
-		LogDir:      g.Cfg(baseCfgPath).MustGet(ctx, "nacos.logDir").String(),
-		NamespaceId: g.Cfg(baseCfgPath).MustGet(ctx, "nacos.namespaceId").String(),
-		Username:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.username").String(),
-		Password:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.password").String(),
+		CacheDir:            g.Cfg(configPath).MustGet(ctx, "nacos.cacheDir").String(),
+		LogDir:              g.Cfg(configPath).MustGet(ctx, "nacos.logDir").String(),
+		NamespaceId:         g.Cfg(configPath).MustGet(ctx, "nacos.namespaceId").String(),
+		Username:            g.Cfg(configPath).MustGet(ctx, "nacos.username").String(),
+		Password:            g.Cfg(configPath).MustGet(ctx, "nacos.password").String(),
+		NotLoadCacheAtStart: true,
+		DisableUseSnapShot:  true,
+		TimeoutMs:           15000, // 增加超时到 15 秒
 	}
 }
 
-func getNacosRegister(ctx context.Context, baseCfgPath string) {
-	addr := g.Cfg(baseCfgPath).MustGet(ctx, "nacos.address").String()
-	port := g.Cfg(baseCfgPath).MustGet(ctx, "nacos.port").Int()
-
+func getNacosRegister(ctx context.Context, configPath string) {
+	addr := g.Cfg(configPath).MustGet(ctx, "nacos.address").String()
+	port := g.Cfg(configPath).MustGet(ctx, "nacos.port").Int()
 	grpcx.Resolver.Register(rnacos.New(fmt.Sprintf("%s:%d", addr, port), func(config *constant.ClientConfig) {
-		*config = getNacosClientConfig(ctx, baseCfgPath) // 覆盖 config 指向的结构体内容
-	}))
+		*config = getNacosClientConfig(ctx, configPath) // 覆盖 config 指向的结构体内容
+	}).SetGroupName(env))
 }
 
-func getNacosAdapter(ctx context.Context, baseCfgPath string) (adapter gcfg.Adapter, err error) {
+func getNacosAdapter(ctx context.Context, configPath string) (adapter gcfg.Adapter, err error) {
 	var (
 		serverConfig = constant.ServerConfig{
-			IpAddr:      g.Cfg(baseCfgPath).MustGet(ctx, "nacos.address").String(),
-			Port:        g.Cfg(baseCfgPath).MustGet(ctx, "nacos.port").Uint64(),
-			GrpcPort:    g.Cfg(baseCfgPath).MustGet(ctx, "nacos.gprc.port").Uint64(),
-			ContextPath: "/nacos",
+			IpAddr: g.Cfg(configPath).MustGet(ctx, "nacos.address").String(),
+			Port:   g.Cfg(configPath).MustGet(ctx, "nacos.port").Uint64(),
 		}
-		clientConfig = getNacosClientConfig(ctx, baseCfgPath)
+		clientConfig = getNacosClientConfig(ctx, configPath)
 		configParam  = vo.ConfigParam{
-			DataId: g.Cfg(baseCfgPath).MustGet(ctx, "nacos.dataID").String(),
-			Group:  g.Cfg(baseCfgPath).MustGet(ctx, "nacos.group").String(),
+			DataId: "gateway-config.yaml",
+			Group:  env,
 		}
 	)
 
@@ -83,10 +91,20 @@ func getNacosAdapter(ctx context.Context, baseCfgPath string) (adapter gcfg.Adap
 		g.Log().Fatalf(ctx, "Failed to create nocos cache dir %s: %v", clientConfig.CacheDir, err)
 	}
 
+	iClient, _ := clients.CreateConfigClient(map[string]interface{}{
+		"serverConfigs": []constant.ServerConfig{serverConfig},
+		"clientConfig":  clientConfig,
+	})
+
+	config, _ := iClient.GetConfig(configParam)
+	fmt.Println(config)
+
 	// Create anacosClient that implements gcfg.Adapter.
-	return nacos.New(ctx, nacos.Config{
+	client, err := nacos.New(ctx, nacos.Config{
 		ServerConfigs: []constant.ServerConfig{serverConfig},
 		ClientConfig:  clientConfig,
 		ConfigParam:   configParam,
 	})
+
+	return client, err
 }

@@ -3,6 +3,13 @@ server:
   name: "gateway"
   openapiPath: "/api.json"
   swaggerPath: "/swagger"
+  # 日志扩展配置(参数日志组件配置)
+  logger:
+    prefix:                "gateway:"                    # 日志内容输出前缀。默认为空
+    level:                 "all"                 # 日志输出级别
+    timeFormat:            "2006-01-02T15:04:05" # 自定义日志输出的时间格式，使用Golang标准的时间格式配置
+    stdout:                true                  # 日志是否同时输出到终端。默认true
+    stdoutColorDisabled:   true                 # 关闭终端的颜色打印。默认开启
 database:
   default:
     host: "124.221.249.230"     # 地址
@@ -25,14 +32,14 @@ database:
     deletedAt: "deleted_at"     # (可选)软删除时间字段名称
     debug:   true
   logger:
-    path: "G:/www/bbk/log/"
+    path: "E:/www/bbk/log/"
     level: "all"
     stdout: true
 logger:
-  path:                  "G:/www/bbk/log/"           # 日志文件路径。默认为空，表示关闭，仅输出到终端
+  path:                  "E:/www/bbk/log/"           # 日志文件路径。默认为空，表示关闭，仅输出到终端
   file:                  "{Y-m-d}.log"         # 日志文件格式。默认为"{Y-m-d}.log"
-  prefix:                "user:"                    # 日志内容输出前缀。默认为空
-  level:                 "info"                 # 日志输出级别
+  prefix:                "gateway:"                    # 日志内容输出前缀。默认为空
+  level:                 "all"                 # 日志输出级别
   timeFormat:            "2006-01-02T15:04:05" # 自定义日志输出的时间格式，使用Golang标准的时间格式配置
   ctxKeys:               []                    # 自定义Context上下文变量名称，自动打印Context的变量到日志中。默认为空
   header:                true                  # 是否打印日志的头信息。默认true
