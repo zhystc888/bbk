@@ -6,10 +6,17 @@ package admin_member
 
 import (
 	"bbk/app/gateway/api/admin_member"
+	v1 "bbk/app/user/api/admin_member/v1"
+	"github.com/gogf/gf/contrib/rpc/grpcx/v2"
 )
 
-type ControllerV1 struct{}
+type ControllerV1 struct {
+	UserRpcService v1.AdminMemberClient
+}
 
 func NewV1() admin_member.IAdminMemberV1 {
-	return &ControllerV1{}
+	conn := grpcx.Client.MustNewGrpcClientConn("user")
+	return &ControllerV1{
+		v1.NewAdminMemberClient(conn),
+	}
 }

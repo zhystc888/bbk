@@ -1,7 +1,6 @@
 package admin_member
 
 import (
-	"bbk/app/gateway/internal/controller"
 	"context"
 
 	"bbk/app/gateway/api/admin_member/v1"
@@ -9,7 +8,7 @@ import (
 )
 
 func (c *ControllerV1) Get(ctx context.Context, req *v1.GetReq) (res *v1.GetRes, err error) {
-	result, err := controller.UserRpcService.Get(ctx, &uam.GetReq{
+	result, err := c.UserRpcService.Get(ctx, &uam.GetReq{
 		UserId: req.UserID,
 	})
 

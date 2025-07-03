@@ -11,14 +11,21 @@ import (
 
 type Controller struct {
 	v1.UnimplementedAdminMemberServer
+	AdminMemberServer service.IAdminMember
 }
 
 func Register(s *grpcx.GrpcServer) {
-	v1.RegisterAdminMemberServer(s.Server, &Controller{})
+	v1.RegisterAdminMemberServer(s.Server, newAdminMemberController())
 }
 
-func (*Controller) Get(ctx context.Context, req *v1.GetReq) (res *v1.GetRes, err error) {
-	member, err := service.AdminMember().GetMember(ctx, req.UserId)
+func newAdminMemberController() *Controller {
+	return &Controller{
+		AdminMemberServer: service.AdminMember(),
+	}
+}
+
+func (c *Controller) Get(ctx context.Context, req *v1.GetReq) (res *v1.GetRes, err error) {
+	member, err := c.AdminMemberServer.GetMember(ctx, req.UserId)
 	if member != nil {
 		res = &v1.GetRes{}
 		res.Name = member.Name
@@ -29,7 +36,7 @@ func (*Controller) Get(ctx context.Context, req *v1.GetReq) (res *v1.GetRes, err
 	return
 }
 
-func (*Controller) GetList(ctx context.Context, req *v1.GetListReq) (res *v1.GetListRes, err error) {
+func (c *Controller) GetList(ctx context.Context, req *v1.GetListReq) (res *v1.GetListRes, err error) {
 	params := &model.AdminGetMemberListDto{
 		UserID: req.UserId,
 		Name:   req.Name,
@@ -39,7 +46,7 @@ func (*Controller) GetList(ctx context.Context, req *v1.GetListReq) (res *v1.Get
 			Limit: req.Limit,
 		},
 	}
-	list, total, err := service.AdminMember().GetMemberList(ctx, params)
+	list, total, err := c.AdminMemberServer.GetMemberList(ctx, params)
 	if err != nil {
 		return res, err
 	}
