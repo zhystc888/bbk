@@ -18,7 +18,7 @@ func (c *ControllerV1) GetMemberList(ctx context.Context, req *v1.GetMemberListR
 	})
 
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	list := make([]v1.GetMemberListItem, len(result.List))

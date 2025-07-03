@@ -11,5 +11,6 @@ import (
 )
 
 type IAdminMemberV1 interface {
+	Get(ctx context.Context, req *v1.GetReq) (res *v1.GetRes, err error)
 	GetMemberList(ctx context.Context, req *v1.GetMemberListReq) (res *v1.GetMemberListRes, err error)
 }
