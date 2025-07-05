@@ -5,5 +5,6 @@
 package logic
 
 import (
+	_ "bbk/app/user/internal/logic/admin_login"
 	_ "bbk/app/user/internal/logic/admin_member"
 )
